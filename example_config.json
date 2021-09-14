@@ -1,0 +1,14 @@
+{
+  "name": "TestSolution",
+  "projects": [
+    {
+      "name": "TestProject",
+      "namespace": "TestProject",
+      "type": "console",
+      "framework": "net5.0",
+      "nuget": {
+        "Newtonsoft.Json": "13.0.1"
+      }
+    }
+  ]
+}
