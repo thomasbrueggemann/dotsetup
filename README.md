@@ -1,6 +1,15 @@
-# dotsetup
+# 🏗️ dotsetup
 
-Creates .NET solutions and projects based on a JSON config file. For example use
+Creates .NET solutions and projects based on a JSON config file.
+
+## Installation
+
+- You need the `dotnet` CLI installed on your machine
+- Just copy the ./dotsetup.ps1 PowerShell script onto your machine as use as follows:
+
+## Usage
+
+For example use
 
 ```bash
 ./dotsetup example_config.json ./test
