@@ -2,13 +2,31 @@
   "name": "TestSolution",
   "projects": [
     {
+      "name": "TestLibrary",
+      "type": "classlib",
+      "framework": "net5.0",
+      "nuget": {
+        "Newtonsoft.Json": "13.0.1"
+      },
+      "references": []
+    },
+    {
       "name": "TestProject",
-      "namespace": "TestProject",
       "type": "console",
       "framework": "net5.0",
       "nuget": {
         "Newtonsoft.Json": "13.0.1"
-      }
+      },
+      "references": ["TestLibrary"]
+    },
+    {
+      "name": "TestLibraryUnitTests",
+      "type": "xunit",
+      "framework": "net5.0",
+      "nuget": {
+        "Newtonsoft.Json": "13.0.1"
+      },
+      "references": ["TestLibrary"]
     }
   ]
 }

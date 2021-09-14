@@ -19,37 +19,32 @@ Copy-Item "assets/.gitignore" -Destination $outputPath
 
 foreach($project in $config.projects) {
 	
-	# create project
-	switch ($project.type) {
-		"console" {
-			$projectPath = "$outputPath/src/$($project.name)"
-			dotnet new $project.type -n $project.name -o $projectPath -lang "C#"
-			Break
-		}
-
-		"classlib" {
-			$projectPath = "$outputPath/src/$($project.name)"
-			Break
-		}
-
-		"webapi" {
-			$projectPath = "$outputPath/src/$($project.name)"
-			Break
-		}
-
-		"xunit" {
-			$projectPath = "$outputPath/tests/$($project.name)"
-			Break
-		}
+	$solutionFolder = "src";
+	if ($project.type -eq "xunit") {
+		$solutionFolder = "tests"
 	}
 
+	$projectName = "$($config.name).$($project.name)"
+	$projectPath = "$outputPath/$solutionFolder/$projectName"
+
+	# create project
+	dotnet new $project.type -n $projectName -o $projectPath -lang "C#" --no-restore
+
+	$projectFilePath = "$projectPath/$projectName.csproj";
+
 	# add nuget packages
-	$project.nuget.PSObject.properties | foreach {
+	foreach ($_ in $project.nuget.PSObject.properties)  {
 		$package = $_.Name
 		$version = $_.Value
 
-		dotnet add "$projectPath/$($project.name).csproj" package $package -f $project.framework -v $version --no-restore
+		dotnet add $projectFilePath package $package -f $project.framework -v $version --no-restore
 	}
 
-	dotnet sln "$outputPath/" add $projectPath -o $projectPath
+	# add project references 
+	foreach ($reference in $project.references) {
+		Write-Output $reference
+		dotnet add $projectFilePath reference "$outputPath/src/$reference/$reference.csproj"
+	}
+
+	dotnet sln "$outputPath/$($config.name).sln" add $projectFilePath
 }
