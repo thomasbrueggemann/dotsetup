@@ -17,7 +17,7 @@ New-Item -Path $outputPath -Name "pipelines" -ItemType "directory"
 New-Item -Path $outputPath -Name "kubernetes" -ItemType "directory"
 Copy-Item "assets/.gitignore" -Destination $outputPath
 
-foreach($project in $config.projects) {
+foreach ($project in $config.projects) {
 	
 	$solutionFolder = "src";
 	if ($project.type -eq "xunit") {
@@ -33,7 +33,7 @@ foreach($project in $config.projects) {
 	$projectFilePath = "$projectPath/$projectName.csproj";
 
 	# add nuget packages
-	foreach ($_ in $project.nuget.PSObject.properties)  {
+	foreach ($_ in $project.nuget.PSObject.properties) {
 		$package = $_.Name
 		$version = $_.Value
 
@@ -42,8 +42,8 @@ foreach($project in $config.projects) {
 
 	# add project references 
 	foreach ($reference in $project.references) {
-		Write-Output $reference
-		dotnet add $projectFilePath reference "$outputPath/src/$reference/$reference.csproj"
+		$referenceName = "$($config.name).$reference"
+		dotnet add $projectFilePath reference "$outputPath/src/$referenceName/$referenceName.csproj"
 	}
 
 	dotnet sln "$outputPath/$($config.name).sln" add $projectFilePath
