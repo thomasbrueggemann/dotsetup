@@ -1,5 +1,10 @@
 {
   "name": "TestSolution",
+  "templates": [
+    {
+      "shortName": "basic_solution_files"
+    }
+  ],
   "projects": [
     {
       "name": "TestLibrary",
