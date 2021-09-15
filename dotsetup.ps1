@@ -6,19 +6,22 @@ New-Item -Path "." -Name "test" -ItemType "directory"
 
 $config = Get-Content -Path $configFile | ConvertFrom-Json
 
+# install templates
+Get-ChildItem -Directory | dotnet new -i "templates/$($_.Name)"
+
 # create solution
 dotnet new sln -n $config.name -o $outputPath
 "# $($config.name)" | Out-File -FilePath "$outputPath/README.md"
 
-# setup basic file structure
-New-Item -Path $outputPath -Name "src" -ItemType "directory"
-New-Item -Path $outputPath -Name "tests" -ItemType "directory"
-New-Item -Path $outputPath -Name "pipelines" -ItemType "directory"
-New-Item -Path $outputPath -Name "kubernetes" -ItemType "directory"
-Copy-Item "assets/.gitignore" -Destination $outputPath
+# apply templates to solution
+foreach ($_ in $config.templates.PSObject.properties) {
+	$shortName = $_.Name
+	$params = $_.Value
+	
+	dotnet new $shortName -o $outputPath
+}
 
 foreach ($project in $config.projects) {
-	
 	$solutionFolder = "src";
 	if ($project.type -eq "xunit") {
 		$solutionFolder = "tests"
@@ -29,6 +32,14 @@ foreach ($project in $config.projects) {
 
 	# create project
 	dotnet new $project.type -n $projectName -o $projectPath -lang "C#" --no-restore
+
+	# apply templates to project
+	foreach ($_ in $project.templates.PSObject.properties) {
+		$shortName = $_.Name
+		$params = $_.Value
+		
+		dotnet new $shortName -o $projectPath
+	}
 
 	$projectFilePath = "$projectPath/$projectName.csproj";
 

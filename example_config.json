@@ -1,5 +1,8 @@
 {
   "name": "TestSolution",
+  "templates": {
+    "basic_solution_files": {}
+  },
   "projects": [
     {
       "name": "TestLibrary",
@@ -8,7 +11,10 @@
       "nuget": {
         "Newtonsoft.Json": "13.0.1"
       },
-      "references": []
+      "references": [],
+      "templates": {
+        "basic_solution_files": {}
+      }
     },
     {
       "name": "TestProject",
