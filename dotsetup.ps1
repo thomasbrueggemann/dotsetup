@@ -6,6 +6,9 @@ New-Item -Path "." -Name "test" -ItemType "directory"
 
 $config = Get-Content -Path $configFile | ConvertFrom-Json
 
+# install templates
+Get-ChildItem -Directory | dotnet new -i "templates/$($_.Name)"
+
 # create solution
 dotnet new sln -n $config.name -o $outputPath
 "# $($config.name)" | Out-File -FilePath "$outputPath/README.md"
@@ -15,10 +18,11 @@ New-Item -Path $outputPath -Name "pipelines" -ItemType "directory"
 New-Item -Path $outputPath -Name "kubernetes" -ItemType "directory"
 
 # apply templates to solution
-
+foreach ($template in $config.templates) {
+	dotnet new $template.shortName -o $outputPath
+}
 
 foreach ($project in $config.projects) {
-	
 	$solutionFolder = "src";
 	if ($project.type -eq "xunit") {
 		$solutionFolder = "tests"

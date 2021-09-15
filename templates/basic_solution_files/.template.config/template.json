@@ -1,7 +1,7 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Thomas Brüggemann",
-  "classifications": ["Solution", "Basic", "Setup"],
+  "classifications": ["Solution", "Files", "Setup"],
   "identity": "dotsetup.BasicSolutionFiles",
   "name": "Basic Solution Files",
   "shortName": "basic_solution_files",
