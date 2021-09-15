@@ -8,5 +8,11 @@
   "tags": {
     "language": "C#",
     "type": "item"
+  },
+  "symbols": {
+    "title": {
+      "type": "parameter",
+      "replaces": "{{title}}"
+    }
   }
 }

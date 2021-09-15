@@ -6,19 +6,24 @@ New-Item -Path "." -Name "test" -ItemType "directory"
 
 $config = Get-Content -Path $configFile | ConvertFrom-Json
 
-# install templates
+# install all custom templates
 Get-ChildItem -Directory | dotnet new -i "templates/$($_.Name)"
 
 # create solution
 dotnet new sln -n $config.name -o $outputPath
-"# $($config.name)" | Out-File -FilePath "$outputPath/README.md"
 
 # apply templates to solution
 foreach ($_ in $config.templates.PSObject.properties) {
 	$shortName = $_.Name
-	$params = $_.Value
+
+	#$params = ""
+	#foreach ($p in $_.Value.PSObject.properties) {
+	#	$params = "$params--$($p.Name) $($p.Value) "
+	#}
 	
-	dotnet new $shortName -o $outputPath
+	#Write-Output $params
+
+	dotnet new $shortName -o $outputPath --title "$($config.name)"
 }
 
 foreach ($project in $config.projects) {
@@ -38,7 +43,7 @@ foreach ($project in $config.projects) {
 		$shortName = $_.Name
 		$params = $_.Value
 		
-		dotnet new $shortName -o $projectPath
+		dotnet new $shortName -o $projectPath --title "$projectName"
 	}
 
 	$projectFilePath = "$projectPath/$projectName.csproj";
