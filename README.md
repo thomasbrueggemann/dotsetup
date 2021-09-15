@@ -22,6 +22,9 @@ to read the example_config.json and create the configured items into the folder 
 ```json
 {
   "name": "TestSolution",
+  "templates": {
+    "basic_solution_files": {}
+  },
   "projects": [
     {
       "name": "TestLibrary",
@@ -30,7 +33,10 @@ to read the example_config.json and create the configured items into the folder 
       "nuget": {
         "Newtonsoft.Json": "13.0.1"
       },
-      "references": []
+      "references": [],
+      "templates": {
+        "basic_solution_files": {}
+      }
     },
     {
       "name": "TestProject",
